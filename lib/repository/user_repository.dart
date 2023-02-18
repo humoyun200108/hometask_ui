@@ -9,6 +9,15 @@ class UserRepository {
   GetUserService getUserService = GetUserService();
   Box<UserModel>? userBox;
 
+  Future<dynamic> getData() async {
+    await openBox();
+    if (userBox!.isEmpty) {
+      return await getUser();
+    } else {
+      return userBox;
+    }
+  }
+
   Future<dynamic> getUser() async {
     try {
       dynamic response = await getUserService.getUserService();
@@ -45,5 +54,15 @@ class UserRepository {
     for (UserModel element in data) {
       await userBox!.add(element);
     }
+  }
+
+  Future<void> editElement(int indexOfElement, String newValue) async {
+    UserModel? currentElement = userBox!.getAt(indexOfElement);
+    currentElement!.name = newValue;
+    await userBox!.putAt(indexOfElement, currentElement);
+  }
+
+  Future<void> deleteElement(int index) async {
+    await userBox!.deleteAt(index);
   }
 }

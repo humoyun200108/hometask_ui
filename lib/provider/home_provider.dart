@@ -14,7 +14,7 @@ class Homeprovider extends ChangeNotifier {
   void getUser() async {
     isLoading = true;
     notifyListeners();
-    await userRepository.getUser().then((dynamic response) {
+    await userRepository.getData().then((dynamic response) {
       if (response is Box<UserModel>) {
         isLoading = false;
         data = response;
@@ -25,5 +25,14 @@ class Homeprovider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  void editElementTitle(int index, String newValue) async {
+    await userRepository.editElement(index, newValue);
+    notifyListeners();
+  }
+
+  void deleteElement(int index) async {
+    await userRepository.deleteElement(index);
   }
 }
